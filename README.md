@@ -14,11 +14,25 @@ Esse projeto permitiu a implementação de práticas avançadas de segurança, c
 ## Modelo conceitual
 ![Modelo Conceitual](/assetsReadme/DER.png)
 
+# Comunicação Resource Server e Authorization Server
+![ResourceAuthorizationServer](/assetsReadme/OAuth2.jpg)
+
+
 ## Implentação Oauth2 (Passo a Passo)
 
 ### Passo 1 (Persistencia das entidades) : 
 - Criar as entidades referentes ao diagrama.
 - User deve ter um relacionamento muitos pra muitos com roles.
+  ```
+  @ManyToMany
+  @JoinTable(name = "tb_user_role",
+          joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+  ```
+  
 - Utilização de Set<> para não haver objetos repetidos na estrutura de dados
 - Métodos addRole ``` public void addRole(Role role) {
         roles.add(role);
@@ -32,6 +46,25 @@ Esse projeto permitiu a implementação de práticas avançadas de segurança, c
         return false;
     }
   ```
+- Criação da entidade Role (ID, Authority) as (1, ROLE_ADMIN)
+```
+@Entity
+@Table(name = "tb_role")
+public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String authority;
+
+   constructor() ...
+
+   get & setters () ...
+
+}
+
+```
+
 ### Passo 2 (Adicionar Spring Security) : 
 - Adicionando as dependências no pom.xml
   ```
