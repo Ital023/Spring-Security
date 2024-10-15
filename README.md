@@ -33,6 +33,7 @@ Esse projeto permitiu a implementação de práticas avançadas de segurança, c
     }
   ```
 ### Passo 2 (Adicionar Spring Security) : 
+- Adicionando as dependências no pom.xml
   ```
   <dependency>
       <groupId>org.springframework.boot</groupId>
