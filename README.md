@@ -16,7 +16,59 @@ Esse projeto permitiu a implementação de práticas avançadas de segurança, c
 
 ## Implentação Oauth2 (Passo a Passo)
 
-### Passo 1: 
+### Passo 1 (Persistencia das entidades) : 
+- Criar as entidades referentes ao diagrama.
+- User deve ter um relacionamento muitos pra muitos com roles.
+- Utilização de Set<> para não haver objetos repetidos na estrutura de dados
+- Métodos addRole ``` public void addRole(Role role) {
+        roles.add(role);
+    } ```
+- Métodos hasRole
+  ```
+  public boolean hasRole(String roleName) {
+        for(Role role : roles) {
+            if(role.getAuthority().equals(roleName)) return true;
+        }
+        return false;
+    }
+  ```
+### Passo 2 (Adicionar Spring Security) : 
+  ```
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+  </dependency>
+  
+  <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
+  </dependency>
+  ```
+ - Desativar as restrições default do Spring Security
+    
+    ```
+    @Configuration
+    public class SecurityConfig {
+    
+    	@Bean
+    	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    		http.csrf(csrf -> csrf.disable());
+    		http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+    		return http.build();
+    	}
+    
+    }
+    ```
+- Adicionar o componente de encode de caracteres no SecurityConfig
+    ```
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    ```
+
+
 
 
 
@@ -48,7 +100,7 @@ Pré-requisitos: Java 17
 
 ```bash
 # clonar repositório
-git clone https://github.com/Ital023/DSCommerce.git
+git clone https://github.com/Ital023/Spring-Security.git
 
 # executar o projeto
 ./mvnw spring-boot:run
