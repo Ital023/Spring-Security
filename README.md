@@ -179,6 +179,31 @@ public class UserService implements UserDetailsService {
 
 }
   ```
+### Passo 4 (Configuração do OAuth2) :
+- Configurar o application.properties
+  
+  ```
+  security.client-id=${CLIENT_ID:myclientid}
+  security.client-secret=${CLIENT_SECRET:myclientsecret}
+  
+  security.jwt.duration=${JWT_DURATION:86400}
+  
+  cors.origins=${CORS_ORIGINS:http://localhost:3000,http://localhost:5173}
+  ```
+- Adicionando as dependências no pom.xml
+  ```
+  <dependency>
+  	<groupId>org.springframework.security</groupId>
+  	<artifactId>spring-security-oauth2-authorization-server</artifactId>
+  </dependency>
+  
+  <dependency>
+  	<groupId>org.springframework.boot</groupId>
+  	<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+  </dependency>
+  
+  ```
+- Adicionar os arquivos AuthorizationServerConfig, ResourceServerConfig e o pacote customgrant as a library
 
 
 
