@@ -150,6 +150,36 @@ public class Role implements GrantedAuthority {
 }
   ```
 
+Camada Service: 
+  ```
+@Service
+public class UserService implements UserDetailsService {
+
+  @Autowired
+    private UserRepository repository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        List<UserDetailsProjection> result = repository.searchUserAndRolesByEmail(username);
+
+        if(result.size() == 0) {
+            throw new UsernameNotFoundException("User Not Found");
+        }
+
+        User user = new User();
+        user.setEmail(username);
+        user.setPassword(result.get(0).getPassword());
+        for(UserDetailsProjection projection : result) {
+            user.addRole(new Role(projection.getRoleId(), projection.getAuthority()));
+        }
+
+
+        return user;
+
+}
+  ```
+
 
 
 
