@@ -11,9 +11,15 @@ Este repositório é destinado aos meus estudos sobre Spring Security com OAuth2
 
 Esse projeto permitiu a implementação de práticas avançadas de segurança, criando uma aplicação robusta, segura e escalável.
 
-
 ## Modelo conceitual
 ![Modelo Conceitual](/assetsReadme/DER.png)
+
+## Implentação Oauth2 (Passo a Passo)
+
+### Passo 1: 
+
+
+
 
 # Tecnologias utilizadas
 ## Back end
@@ -21,46 +27,24 @@ Esse projeto permitiu a implementação de práticas avançadas de segurança, c
 - Spring Boot
 - JPA / Hibernate
 - Maven
-## Front end
-- HTML / CSS / JS / TypeScript
-- ReactJS
-## Implantação em produção
-- Back end: Heroku
-- Front end web: Netlify
-- Banco de dados: Postgresql
+- Oauth2
+- Resource Server
+- Authorization Server
+  
 
 # Rotas
 &#9679;	Produtos
 
 | Método | Caminho                      | Descrição                                           | Role Necessária                  |
 | ------ | ---------------------------- | -------------------------------------------------- | -------------------------------- |
+| GET    | /products                  | Retorna uma lista de produtos                        | Nenhuma            |
 | GET    | /products/{id}             | Retorna um produto específico pelo ID.              | Nenhuma                          |
-| GET    | /products                  | Retorna uma lista paginada de produtos, podendo filtrar pelo nome. | Nenhuma            |
-| POST   | /products                  | Adiciona um novo produto.                           | ROLE_ADMIN                     |
-| PUT    | /products/{id}             | Atualiza os dados de um produto específico pelo ID. | ROLE_ADMIN                     |
-| DELETE | /products/{id}             | Remove um produto específico pelo ID.               | ROLE_ADMIN                     |
-
-&#9679;	Pedidos
-| Método | Caminho                      | Descrição                                           | Role Necessária                      |
-| ------ | ---------------------------- | -------------------------------------------------- | ------------------------------------ |
-| GET    | /orders/{id}               | Retorna uma ordem específica pelo ID.              | ROLE_ADMIN ou ROLE_CLIENT        |
-| POST   | /orders                    | Cria uma nova ordem.                               | ROLE_CLIENT                        |
-
-&#9679;	Categorias
-| Método | Caminho          | Descrição                                      | Role Necessária |
-| ------ | ---------------- | --------------------------------------------- | --------------- |
-| GET    | /categories    | Retorna a lista de todas as categorias.       | Nenhuma         |
-
-&#9679;	Usuario
-| Método | Caminho        | Descrição                                        | Role Necessária                      |
-| ------ | -------------- | ----------------------------------------------- | ------------------------------------ |
-| GET    | /users/me    | Retorna as informações do usuário autenticado.  | ROLE_ADMIN ou ROLE_CLIENT        |
-
+| POST   | /products                  | Adiciona um novo produto.                           | Nenhuma                     |
 
 # Como executar o projeto
 
 ## Back end
-Pré-requisitos: Java 21
+Pré-requisitos: Java 17
 
 ```bash
 # clonar repositório
@@ -70,19 +54,6 @@ git clone https://github.com/Ital023/DSCommerce.git
 ./mvnw spring-boot:run
 ```
 
-## Front end web
-Pré-requisitos: npm / yarn
-
-```bash
-# clonar repositório
-git clone https://github.com/Ital023/DSCommerce-FrontEnd.git
-
-# instalar dependências
-yarn install
-
-# executar o projeto
-yarn start
-```
 ## 🤝 Colaboradores
 
 Agradecemos às seguintes pessoas que contribuíram para este projeto:
