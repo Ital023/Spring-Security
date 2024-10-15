@@ -101,7 +101,54 @@ public class Role {
         return new BCryptPasswordEncoder();
     }
     ```
+### Passo 3 (Implementar as interfaces Spring Security) : 
+  Entidade User: 
+  ```
+public class User implements UserDetails {
 
+  // É necessário Role implementar de GrantedAuthority 
+  @Override // Aqui ficara a collection de roles do usuário, como definimos o atributo roles como isso retornamos roles
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override // Retornar o atributo que representa o username do usuario, ou seja, o atributo unico que diferencia dos demais
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+}
+  ```
+
+Entidade Role: 
+  ```
+public class Role implements GrantedAuthority {
+  @Override //Retorna qual é o valor representado pela authority like (ROLE_ADMIN)
+      public String getAuthority() {
+          return authority;
+      }
+}
+  ```
 
 
 
