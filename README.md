@@ -15,7 +15,7 @@ Esse projeto permitiu a implementação de práticas avançadas de segurança, c
 ![Modelo Conceitual](/assetsReadme/DER.png)
 
 # Comunicação Resource Server e Authorization Server
-![ResourceAuthorizationServer](/assetsReadme/OAuth2.jpg)
+<img src="/assetsReadme/OAuth2.png" alt="ResourceAuthorizationServer" width="500">
 
 
 ## Implentação Oauth2 (Passo a Passo)
