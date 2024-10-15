@@ -11,9 +11,101 @@ Este repositório é destinado aos meus estudos sobre Spring Security com OAuth2
 
 Esse projeto permitiu a implementação de práticas avançadas de segurança, criando uma aplicação robusta, segura e escalável.
 
-
 ## Modelo conceitual
 ![Modelo Conceitual](/assetsReadme/DER.png)
+
+# Comunicação Resource Server e Authorization Server
+![ResourceAuthorizationServer](/assetsReadme/OAuth2.jpg)
+
+
+## Implentação Oauth2 (Passo a Passo)
+
+### Passo 1 (Persistencia das entidades) : 
+- Criar as entidades referentes ao diagrama.
+- User deve ter um relacionamento muitos pra muitos com roles.
+  ```
+  @ManyToMany
+  @JoinTable(name = "tb_user_role",
+          joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+  ```
+  
+- Utilização de Set<> para não haver objetos repetidos na estrutura de dados
+- Métodos addRole ``` public void addRole(Role role) {
+        roles.add(role);
+    } ```
+- Métodos hasRole
+  ```
+  public boolean hasRole(String roleName) {
+        for(Role role : roles) {
+            if(role.getAuthority().equals(roleName)) return true;
+        }
+        return false;
+    }
+  ```
+- Criação da entidade Role (ID, Authority) as (1, ROLE_ADMIN)
+```
+@Entity
+@Table(name = "tb_role")
+public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String authority;
+
+   constructor() ...
+
+   get & setters () ...
+
+}
+
+```
+
+### Passo 2 (Adicionar Spring Security) : 
+- Adicionando as dependências no pom.xml
+  ```
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+  </dependency>
+  
+  <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
+  </dependency>
+  ```
+ - Desativar as restrições default do Spring Security
+    
+    ```
+    @Configuration
+    public class SecurityConfig {
+    
+    	@Bean
+    	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    		http.csrf(csrf -> csrf.disable());
+    		http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+    		return http.build();
+    	}
+    
+    }
+    ```
+- Adicionar o componente de encode de caracteres no SecurityConfig
+    ```
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    ```
+
+
+
+
+
 
 # Tecnologias utilizadas
 ## Back end
@@ -21,68 +113,33 @@ Esse projeto permitiu a implementação de práticas avançadas de segurança, c
 - Spring Boot
 - JPA / Hibernate
 - Maven
-## Front end
-- HTML / CSS / JS / TypeScript
-- ReactJS
-## Implantação em produção
-- Back end: Heroku
-- Front end web: Netlify
-- Banco de dados: Postgresql
+- Oauth2
+- Resource Server
+- Authorization Server
+  
 
 # Rotas
 &#9679;	Produtos
 
 | Método | Caminho                      | Descrição                                           | Role Necessária                  |
 | ------ | ---------------------------- | -------------------------------------------------- | -------------------------------- |
+| GET    | /products                  | Retorna uma lista de produtos                        | Nenhuma            |
 | GET    | /products/{id}             | Retorna um produto específico pelo ID.              | Nenhuma                          |
-| GET    | /products                  | Retorna uma lista paginada de produtos, podendo filtrar pelo nome. | Nenhuma            |
-| POST   | /products                  | Adiciona um novo produto.                           | ROLE_ADMIN                     |
-| PUT    | /products/{id}             | Atualiza os dados de um produto específico pelo ID. | ROLE_ADMIN                     |
-| DELETE | /products/{id}             | Remove um produto específico pelo ID.               | ROLE_ADMIN                     |
-
-&#9679;	Pedidos
-| Método | Caminho                      | Descrição                                           | Role Necessária                      |
-| ------ | ---------------------------- | -------------------------------------------------- | ------------------------------------ |
-| GET    | /orders/{id}               | Retorna uma ordem específica pelo ID.              | ROLE_ADMIN ou ROLE_CLIENT        |
-| POST   | /orders                    | Cria uma nova ordem.                               | ROLE_CLIENT                        |
-
-&#9679;	Categorias
-| Método | Caminho          | Descrição                                      | Role Necessária |
-| ------ | ---------------- | --------------------------------------------- | --------------- |
-| GET    | /categories    | Retorna a lista de todas as categorias.       | Nenhuma         |
-
-&#9679;	Usuario
-| Método | Caminho        | Descrição                                        | Role Necessária                      |
-| ------ | -------------- | ----------------------------------------------- | ------------------------------------ |
-| GET    | /users/me    | Retorna as informações do usuário autenticado.  | ROLE_ADMIN ou ROLE_CLIENT        |
-
+| POST   | /products                  | Adiciona um novo produto.                           | Nenhuma                     |
 
 # Como executar o projeto
 
 ## Back end
-Pré-requisitos: Java 21
+Pré-requisitos: Java 17
 
 ```bash
 # clonar repositório
-git clone https://github.com/Ital023/DSCommerce.git
+git clone https://github.com/Ital023/Spring-Security.git
 
 # executar o projeto
 ./mvnw spring-boot:run
 ```
 
-## Front end web
-Pré-requisitos: npm / yarn
-
-```bash
-# clonar repositório
-git clone https://github.com/Ital023/DSCommerce-FrontEnd.git
-
-# instalar dependências
-yarn install
-
-# executar o projeto
-yarn start
-```
 ## 🤝 Colaboradores
 
 Agradecemos às seguintes pessoas que contribuíram para este projeto:
